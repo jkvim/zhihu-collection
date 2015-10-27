@@ -1,0 +1,18 @@
+{
+  "name": "zhihu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "express": "^4.13.3",
+    "superagent": "^1.4.0",
+    "zhihu": "^0.0.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
