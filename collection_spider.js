@@ -6,6 +6,7 @@ var eventproxy = require('eventproxy');
 var async = require('async');
 var url = require('url');
 var fs = require('fs');
+var util = require('./util.js');
 
 
 var connectControl = retry.operation({
@@ -115,66 +116,36 @@ ep.on('save', function (collection) {
 	var answers = collection.answers;
 	var collectPath = './collection';
 
-	createDir(collectPath, ep.done('create_dir')); 
 
 	async.auto({
-		mkdir: function (callback) {
-			collectPath = path.resolve(collectPath, title);
-			createDir(collectPath, callback);
+		root_dir: function (callback) {
+			util.createDir(collectPath, callback); 
 		},
+		mkdir:['root_dir', function (callback, result) {
+			collectPath = path.resolve(result.root_dir, title);
+			util.createDir(collectPath, callback);
+		}],
 		write_file: ['mkdir', function (callback, result) {
 			answers.forEach(function (answer) {
 				var fileName = path.resolve(result.mkdir,
 																		answer.id + '.html');
 				console.log('file:', fileName);
 				var outStream = fs.createWriteStream(fileName);
-				pipe(outStream, [
+				util.pipe(outStream, [
 					'<meta http-equiv="Content-Type" content="text/html;' +
 					'charset=utf-8">',
 					'<p id=\'author\'>' + answer.author + '</p>\n\n',
 					'<p id=\'title\'>' + answer.title + '</p>\n\n',
-					'<p id=\'content\'>' + answer.content + '</p>'],
+					'<p id=\'content\'>\n' + answer.content + '\n</p>'],
 					{end: true}, callback);
 			});
 		}]
 	}, function (err, results) {
+		console.log('done');
 		console.log('err = ', err);
 		console.log('results = ', results);
 	});
 });
-
-function pipe(writeStream, content, opt, callback) {
-	content.forEach(function (line) {
-		writeStream.write(line);
-	});
-
-	if (opt && opt.end) {
-		writeStream.end();
-	}
-
-	callback(null);
-}
-
-function createDir(path, callback) {
-	fs.stat(path, function (err, stats) {
-		if (err && err.code === 'ENOENT') { 
-		 console.log('code:' + err.code + ' path:' + path);
-		 try {
-		 	fs.mkdirSync(path);
-		 } catch(e) {
-				if (e && e.code !== 'EEXIST') throw e;
-		 }
-		} else if (err) {
-			console.log('createDir error:', err);
-			callback(err);
-			return;
-		} else if (stats && !stats.isDirectory()) {
-				fs.unlinkSync(collectPath);
-				fs.mkdirSync(collectPath);
-		 }
-		callback(null, path);
-		});
-}
 
 
 ep.fail(function (err) {

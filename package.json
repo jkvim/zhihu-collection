@@ -4,10 +4,13 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "async": "^1.5.0",
     "cheerio": "^0.19.0",
+    "eventproxy": "^0.3.4",
     "express": "^4.13.3",
+    "request": "^2.65.0",
+    "retry": "^0.8.0",
     "superagent": "^1.4.0",
-    "zhihu": "^0.0.21"
   },
   "devDependencies": {},
   "scripts": {

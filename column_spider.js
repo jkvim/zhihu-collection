@@ -1,10 +1,12 @@
 var superagent = require('superagent');
 var cheerio = require('cheerio');
 var fs = require('fs');
+var path = require('path');
 var async = require('async');
 var eventproxy = require('eventproxy');
 var url = require('url');
 var paht = require('path');
+var util = require('./util.js');
 
 
 var columnUrl = 'http://www.zhihu.com/people/xiao-yan-jing-43/posts';
@@ -17,7 +19,6 @@ superagent.get(columnUrl)
 		if (err) {
 			throw err;
 		}
-
 
 		var $ = cheerio.load(res.text);
 		var uid = '';
@@ -36,17 +37,41 @@ superagent.get(columnUrl)
 					if (err) {
 						throw err;
 					}
-
 					ep.emit('parse_posts', res.text);
 				});
 		});
 
 		ep.after('parse_posts', slugs.length, function (posts) {
-			posts.forEach(function (post) {
-				console.log(JSON.parse(post));
+			var postDir = './posts';
+			async.auto({
+				mkdir: function (callback) {
+					util.createDir(postDir, callback);
+				},
+				write_file: ['mkdir', function (callback, result) {
+					posts.forEach(function (post) {
+						post = JSON.parse(post);
+						var href = post.href.match(/\/api\/columns\/(.*)/)[1].replace(/\//g, '_');
+						var fileName = href + '.html';
+						var postPath = path.resolve(postDir, fileName);
+						var outStream = fs.createWriteStream(postPath);	
+
+						util.pipe(outStream, [
+							'<meta http-equiv="Content-Type" content="text/html;' +
+								'charset=utf-8">',
+							'<p id=\'author\'>' + post.author.name + '</p>\n\n',
+							'<p id=\'title\'>' + post.title + '</p>\n\n',
+							'<p id=\'content\'>\n' + post.content + '\n</p>'],
+							{end: true});
+					});
+				}]	
+			}, function (err, results) {
+				console.log('done');
+				console.log('err:', err);	
+				console.log('results:', results);
 			});
 		});
-
 });
 
-
+ep.fail(function (err) {
+	throw '[EventProxy] ' + err ;
+});
