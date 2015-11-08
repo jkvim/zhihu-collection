@@ -1,0 +1,9 @@
+<div id="collections">
+	<h1>收藏夹列表</h1>
+	<ul id="list">
+	{{#each collections}}
+		<li><a href="/collection/{{this.id}}">{{this.title}}</a></li>
+	{{/each}}
+	</ul>
+</div>
+

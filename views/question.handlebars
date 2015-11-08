@@ -1,0 +1,8 @@
+<h2>问题列表</h2>
+<div id="questions">
+	<ul>
+		{{#each questions}}
+		<li><a href="/question/{{this.id}}">{{this.title}}</a></li>
+		{{/each}}
+	</ul>
+</div>

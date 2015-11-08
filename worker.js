@@ -1,8 +1,25 @@
 var http = require('http');
 var express = require('express');
+var Answer = require('./models/answer.js');
+var Question = require('./models/question.js');
+var Collection = require('./models/collection.js');
+var Q = require('q');
 var app = express();
 
+var handlebars = require('express-handlebars').create({
+	defaultLayout: 'main',
+	helpers: {
+		static: function (name) {
+			return require('./lib/static.js').map(name);
+		}
+	}
+});
 
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/zhihu');
+
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
 app.set('port', 3000);
 
 app.use(function (req, res, next) {
@@ -40,24 +57,96 @@ app.use(function (req, res, next) {
 	domain.run(next);
 });
 
-app.use('/', function (req, res, next) {
-	console.log('not done');
-	next();
-});
-
-app.use('/fail', function (req, res) {
-	throw new Error('Nope');
-});
-
-app.use(function (err, req, res, next) {
-	console.log(err.statck);
-	res.status(500).render('500');
-});
+app.use(express.static(__dirname + '/public'));
 
 app.use(function (req, res, next) {
 	var cluster = require('cluster');
 	if (cluster.isWorker) console.log('Worker %d receive request', cluster.worker.id);
+	next();
 });
+
+app.get('/', function (req, res) {
+	new Q().then(function () {
+		return Collection.find(function (err, raw) {
+			return raw;
+		});
+	})
+	.then(function (raw) {
+		return raw.map(function (element) {
+			return {
+				id: element.id,
+				title: element.title
+			};
+		});
+	})
+	.then(function (collections) {
+		res.render('home', {collections: collections});
+	})
+	.fail(function (error) {
+		console.log(error);
+		res.render('500');
+	});
+});
+
+app.get('/collection/:id', function (req, res) {
+	var id = req.params.id;
+
+	new Q().then(function () {
+		return Question.find({parentId: id}, function (err, raw) {
+			return raw;
+		});
+	 })
+	 .then(function (raw) {
+		 return raw.map(function (element){
+			 return {
+				 id: element.id,
+				 title: element.title,
+				 parentId: element.parentId};
+		 });
+	 })
+	 .then(function (questions) {
+		 res.render('question', {questions: questions});
+	 })
+	 .fail(function (error) {
+		 console.log(error);
+		 res.render('500');
+	 });
+});
+
+app.get('/question/:id/', function (req, res) {
+	var id = req.params.id;
+
+	new Q().then(function () {
+		return Answer.find({parentId: id}, function (err, raw) {
+			return raw;
+		});
+	})
+	.then(function (raw) {
+		return raw.map(function (element) {
+			return {
+				author: element.author,
+				href: element.href,
+				content: element.content
+			};
+		});
+	})
+	.then(function (answers) {
+		res.render('answer', {answers: answers})
+	})
+	.fail(function (error) {
+		console.log(error);
+		res.render('500');
+	});
+
+});
+
+
+app.use(function (err, req, res, next) {
+	console.log('in err');
+	console.log(err);
+	res.status(500).render('500');
+});
+
 
 function startServer() {
 	var server = http.createServer(app).listen(app.get('port'), function () {
