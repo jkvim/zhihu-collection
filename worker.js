@@ -105,7 +105,8 @@ app.get('/collection/:id', function (req, res) {
 		 });
 	 })
 	 .then(function (questions) {
-		 res.render('question', {questions: questions});
+		 res.status(200);
+		 res.send(questions);
 	 })
 	 .fail(function (error) {
 		 console.log(error);
@@ -131,7 +132,8 @@ app.get('/question/:id/', function (req, res) {
 		});
 	})
 	.then(function (answers) {
-		res.render('answer', {answers: answers})
+		res.status(200)
+		   .send(answers)
 	})
 	.fail(function (error) {
 		console.log(error);

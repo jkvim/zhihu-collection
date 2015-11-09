@@ -5,8 +5,34 @@
 
 	<title>知乎离线收藏夹</title>
 	<script src="{{static '/js/jquery.js'}}"></script>
+	<script src="{{static '/js/get.js'}}"></script>
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
 </head>
 	<body>
-		{{{body}}}
+		<div id="content">
+			<div id="column2" class="interior">
+				<div id="intro" class="interior">
+					<h3> 收藏夹列表 </h3>
+				</div>
+				<ul>
+					{{#each collections}}
+					<li><a href="/collection/{{this.id}}">{{this.title}}</a></li>
+					{{/each}}
+				</ul>
+			</div>
+			<div id="column1" class="interior">
+				<header>
+					<h3>问题列表</h3>
+				</header>
+				<div id="questions">
+					<ul>
+					</ul>
+					<div id="answer">
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
+
