@@ -1,10 +1,14 @@
 $(function () {
 	var $link = $('#column2 ul > li > a');
 	var $questions = $('#column1 > #questions >ul');
+	var $answers = $('#answers');
+
 	$link.click(function (event) {
-		$questions.empty();
 		$elem = $(this);
 		event.preventDefault();
+		$questions.empty();
+		$answers.empty();
+
 		$.get($elem.attr('href'), function (data, status) {
 			if (status === 500) return;
 			data.forEach(function (question) {
@@ -23,26 +27,47 @@ $(function () {
 });
 
 function showAnswer(event) {
-	event.preventDefault();
-	var $question = $('#questions ul >li >a');
-	var $answer = $('#answer');
+	var $answers = $('#answers');
 	$elem = $(this);
-	$answer.empty();
-	$answer.append('<h3>' + $elem.text() + '</h3>');
+	var questionHref = $elem.attr('href');
+	var sourceHref = 'http://www.zhihu.com' + questionHref;
 
-	$.get($elem.attr('href'), function (data, status) {
+	event.preventDefault();
+
+	$answers.empty();
+	$(document.createElement('a'))
+	  .attr('href', sourceHref)
+		.attr('target', '_blank')
+		.attr('id', 'title')
+		.text($elem.text())
+		.appendTo($answers);
+				 
+
+	$.get(questionHref, function (data, status) {
 		if (status === 500) return; 
 		data.forEach(function (answer) {
 			var author = answer.author;
-			var link = answer.href;
+			var answerLink = answer.answerLink;
 			var content = answer.content;
+			var authorLink = answer.authorLink;
 
-			$(document.createElement('div')).append(
+			$(document.createElement('div'))
+			.addClass('answer-item')
+			.append(
 				'<hr>' +
-				'<p class="author">作者: ' + author  + '</p>' + 
-				'<a href="http://www.zhihu.com'+ link + '">link</a>' + 
-				'<p class="content">回答:' + content + '</p>' 
-			).appendTo($answer);
+				'<a href=http://www.zhihu.com' + authorLink + ' class="author">作者: ' + author  + '</a>' + 
+				'<a href=http://www.zhihu.com'+ answerLink + ' class="answer">link</a>' + 
+				'<div class="content">' + content + '</div>' 
+			).appendTo($answers);
 		});
+	// redirect to answer
+	window.location.href = '#answers';
 	});
 }
+
+$(function () {
+	$('#column2 a').click(function () {
+		$('#column2 a').removeClass('active');
+		$(this).addClass('active');
+	});
+});

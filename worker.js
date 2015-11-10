@@ -126,7 +126,8 @@ app.get('/question/:id/', function (req, res) {
 		return raw.map(function (element) {
 			return {
 				author: element.author,
-				href: element.href,
+				authorLink: element.authorLink,
+				answerLink: element.answerLink,
 				content: element.content
 			};
 		});

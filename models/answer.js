@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var answerScheMa = mongoose.Schema({
 	author: String,
-	href: String,
+	authorLink: String,
+	answerLink: String,
 	content: String,
 	editTime: String,
 	parentId: String
