@@ -27,13 +27,28 @@ a:focus {
   color: #FFA158;
 }
 
-#intro {
-  margin-top: 1.25em;
-  margin-left: 1.0em;
+.toc-title {
+	background: #EEE;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #DDD;
 }
 
-#intro h3 {
-  padding-left: 0.5em;
+.toc-title h3 {
+	margin: 0px;
+	padding-top: 1em;
+	font-weight: normal;
+}
+
+.toc-title #collection-list {
+	padding-left: 3.3em;
+}
+
+.toc-title #post-list {
+	padding-left: 3.8em;
+}
+
+.toc-list {
+	display: none;
 }
 
 #content {
@@ -49,6 +64,7 @@ a:focus {
   height: 100%;
   overflow-y: scroll;
   background: #f2f5f0;
+	font-style: sans-serif;
 }
 
 
@@ -73,8 +89,8 @@ a:focus {
 }
 
 #column2 ul li {
-  padding-left: 1.4em;
   margin-bottom: 0.5em;
+  padding-left: 1.8em;
   padding-bottom: 0.5em;
   font-size: 0.8em;
 }
@@ -99,7 +115,7 @@ a:focus {
   padding-left: 2.0em;
 }
 
-#column1 h3 {
+#column1 {
 	margin: 0px;
 	padding-top: 1em;
 }
@@ -122,5 +138,9 @@ a:focus {
 
 #answers .answer-item {
 	margin-bottom: 1em;
+}
+
+#answers img {
+	max-width: 100%;
 }
 

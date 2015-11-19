@@ -11,19 +11,28 @@
 	<body>
 		<div id="content">
 			<div id="column2" class="interior">
-				<div id="intro" class="interior">
-					<h3> 收藏夹列表 </h3>
+				<div class="toc-title">
+					<h3 id="collection-list"> 收藏夹 </h3>
 				</div>
-				<ul>
-					{{#each collections}}
-					<li><a href="/collection/{{this.id}}">{{this.title}}</a></li>
-					{{/each}}
-				</ul>
+				<div class="toc-list" >
+					<ul>
+						{{#each collections}}
+						<li><a href="/collection/{{this.id}}">{{this.title}}</a></li>
+						{{/each}}
+					</ul>
+				</div>
+				<div class="toc-title">
+					<h3 id="post-list"> 专栏 </h3>
+				</div>
+				<div class="toc-list" >
+					<ul>
+						{{#each posts}}
+						<li><a href="/column/{{this.uid}}">{{this.title}}</a></li>
+						{{/each}}
+					</ul>
+				</div>
 			</div>
 			<div id="column1" class="interior">
-				<header>
-					<h3>问题列表</h3>
-				</header>
 				<div id="questions">
 					<ul>
 					</ul>

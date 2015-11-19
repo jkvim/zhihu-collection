@@ -5,7 +5,7 @@ var answerScheMa = mongoose.Schema({
 	answerLink: String,
 	content: String,
 	editTime: String,
-	parentId: String
+	questionId: String
 });
 
 // model auto to puarl, so it create 'answers' collection
