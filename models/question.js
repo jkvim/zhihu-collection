@@ -6,5 +6,8 @@ var questionScheMa = mongoose.Schema({
 	collectionId: String
 });
 
-var Question = mongoose.model('questions', questionScheMa);
+var Question = function (db) {
+	return db.model('questions', questionScheMa);
+}
+
 module.exports = Question;

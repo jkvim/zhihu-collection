@@ -28,22 +28,20 @@ function appendList(item, $parent) {
 			$(document.createElement('a'))
 			.attr('href', `${path}${id}`)
 			.text(title)
-			.on('click', {uid: item.uid, slug: item.slug}, showAnswer)));
+			.on('click', item, showAnswer)));
 }
 
+//
 function showAnswer(event) {
 	var $answers = $('#answers');
 	$elem = $(this);
 	var item = event.data;
 	var questionHref = $elem.attr('href');
-	console.log(item);
 	if (item.slug) {
-		var sourceHref = `http://zhuanlan.zhihu.com/${item.uid}/${item.slug}`
+		var sourceHref =  item.url;
 	} else {
 		var sourceHref = 'http://www.zhihu.com' + questionHref;
 	}
-
-	console.log(sourceHref);
 
 	event.preventDefault();
 
@@ -73,11 +71,13 @@ function showAnswer(event) {
 
 function addPost(post) {
 	var	content = post.content;
+	var titleImage = post.titleImage;
 
 	var $post = $(document.createElement('div'))
 							 .addClass('post-item')
 							 .append(
 							  '<hr>' + 
+								'<div><img src="' + titleImage + '"></div>' + 
 								'<div class="content">' + content + '</div>');
 	return $post;
 }
@@ -115,7 +115,27 @@ $(function () {
 	});
 });
 
-// get posts list 
-$(function () {
+// back to top
 
+
+$(function(){
+
+	$(document).on( 'scroll', function(){
+
+		if ($(window).scrollTop() > 100) {
+			$('.scroll-top-wrapper').addClass('show');
+		} else {
+			$('.scroll-top-wrapper').removeClass('show');
+		}
+	});
+	$('.scroll-top-wrapper').on('click', scrollToTop);
 });
+
+ 
+function scrollToTop() {
+	verticalOffset = typeof(verticalOffset) != 'undefined' ? verticalOffset : 0;
+	element = $('body');
+	offset = element.offset();
+	offsetTop = offset.top;
+	$('html, body').animate({scrollTop: offsetTop}, 500, 'linear');
+}

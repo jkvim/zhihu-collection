@@ -1,10 +1,5 @@
 var http = require('http');
 var express = require('express');
-var Answer = require('./models/answer.js');
-var Question = require('./models/question.js');
-var Collection = require('./models/collection.js');
-var Column = require('./models/column.js');
-var Post = require('./models/post.js');
 var Q = require('q');
 var app = express();
 
@@ -18,7 +13,13 @@ var handlebars = require('express-handlebars').create({
 });
 
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/zhihu');
+var db = mongoose.createConnection('mongodb://localhost/zhihu');
+
+var Answer = require('./models/answer.js')(db);
+var Question = require('./models/question.js')(db);
+var Collection = require('./models/collection.js')(db);
+var Column = require('./models/column.js')(db);
+var Post = require('./models/post.js')(db);
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -84,8 +85,8 @@ app.get('/', function (req, res) {
 		 Column.find(function (err, raw) {
 			var columns =  raw.map(function (element) {
 				return {
-					uid: element.uid,
-					title: element.title,
+					columnName: element.columnName,
+					columnSlug: element.columnSlug,
 				}
 			});
 			resolve(columns);
@@ -161,20 +162,20 @@ app.get('/question/:id/', function (req, res) {
 });
 
 //获取文章列表
-app.get('/column/:uid', function (req, res) {
-	var uid = req.params.uid;
+app.get('/column/:slug', function (req, res) {
+	var slug = req.params.slug;
 
 	new Q().then(function () {
-		return Post.find({uid:uid}, function (err, raw) {
+		return Post.find({columnSlug:slug}, function (err, raw) {
 			return raw;	
 		});
 	})
 	.then(function (raw) {
 		return raw.map(function (element) {
 			return {
-				uid: element.uid,
-				slug: element.slug,
+				slug: element.postSlug,
 				title: element.title,
+				url: element.url,
 			};
 		});
 	})
@@ -192,23 +193,27 @@ app.get('/post/:slug', function (req, res) {
 	var slug = req.params.slug;	
 
 	new Q().then(function () {
-		return Post.find({slug: slug}, function (err, raw) {
+		return Post.find({postSlug: slug}, function (err, raw) {
 			return raw;
 		});
 	})
 	.then(function (raw) {
 		return raw.map(function (element) {
 			return {
-				uid: element.uid,
-				slug: element.slug,
-				title: element.title,
-				content: element.content
+				slug: element.postSlug,
+				author: element.author,
+				titleImage: element.titleImage,
+				content: element.content,
 			};
 		});
 	})
 	.then(function (post) {
 		res.status(200)
 			.send(post);
+	})
+	.catch(function (error) {
+		console.log(error);
+		res.render('500');
 	});
 });
 

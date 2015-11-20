@@ -1,8 +1,10 @@
 var mongoose = require('mongoose');
 var columnSchema = mongoose.Schema({
-	uid: String,
-	title: String
+	columnName: String,
+	columnSlug: String,
 });
 
-var Column = mongoose.model('columns', columnSchema);
+var Column = function (db) {
+	return db.model('columns', columnSchema);
+}
 module.exports = Column;

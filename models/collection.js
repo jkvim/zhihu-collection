@@ -5,5 +5,8 @@ var collectionScheMa = mongoose.Schema({
 	title: String
 });
 
-var Collection = mongoose.model('collections', collectionScheMa);
+var Collection = function (db) {
+	return db.model('collections', collectionScheMa);
+}
+
 module.exports = Collection;

@@ -1,12 +1,16 @@
 var mongoose = require('mongoose');
 var postSchema = mongoose.Schema({
-	uid: String,
-	slug: String,
+	columnSlug: String,
+	postSlug: String,
 	author: String,
 	title: String,
-	content: String,
+	titleImage: String,
 	url: String,
+	content: String,
 });
 
-var Post = mongoose.model('posts', postSchema);
+var Post = function (db) {
+	return db.model('posts', postSchema);
+}
+
 module.exports = Post;

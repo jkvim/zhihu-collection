@@ -7,6 +7,7 @@
 	<script src="{{static '/js/jquery.js'}}"></script>
 	<script src="{{static '/js/get.js'}}"></script>
 	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" id="font-awesome-css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" type="text/css" media="screen">	
 </head>
 	<body>
 		<div id="content">
@@ -27,7 +28,7 @@
 				<div class="toc-list" >
 					<ul>
 						{{#each posts}}
-						<li><a href="/column/{{this.uid}}">{{this.title}}</a></li>
+						<li><a href="/column/{{this.columnSlug}}">{{this.columnName}}</a></li>
 						{{/each}}
 					</ul>
 				</div>
@@ -40,6 +41,11 @@
 				<div id="answers">
 				</div>
 			</div>
+		</div>
+		<div class="scroll-top-wrapper ">
+			<span class="scroll-top-inner">
+				<i class="fa fa-2x fa-arrow-circle-up"></i>
+			</span>
 		</div>
 	</body>
 </html>
