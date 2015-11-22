@@ -23,8 +23,6 @@ function appendList(item, $parent) {
 	var title = item.title;
 	var id = item.id || item.slug;
 	var path = item.slug ? '/post/' : '/question/'
-	path = item.peopleId ? '/people/' + item.peopleId + path : path;
-
 	$parent.append(
 		$(document.createElement('li')).append(
 			$(document.createElement('a'))
@@ -33,16 +31,15 @@ function appendList(item, $parent) {
 			.on('click', item, showAnswer)));
 }
 
+//
 function showAnswer(event) {
 	var $answers = $('#answers');
 	$elem = $(this);
 	var item = event.data;
 	var questionHref = $elem.attr('href');
 	if (item.slug) {
-		// post
 		var sourceHref =  item.url;
 	} else {
-		// collection question
 		var sourceHref = 'http://www.zhihu.com' + questionHref;
 	}
 
@@ -52,21 +49,18 @@ function showAnswer(event) {
 	$(document.createElement('a'))
 	  .attr('href', sourceHref)
 		.attr('target', '_blank')
-		.addClass('answer-item-title')
+		.attr('id', 'title')
 		.text($elem.text())
 		.appendTo($answers);
 				 
 
 	$.get(questionHref, function (data, status) {
-		console.log(data);
 		if (status === 500) return; 
 		data.forEach(function (item) {
 			if (item.slug) {
 				addPost(item).appendTo($answers);
-			} else if (item.author){
-				addCollectionAnswer(item).appendTo($answers);
 			} else {
-				addPeopleAnswer(item).appendTo($answers);
+				addAnswer(item).appendTo($answers);
 			}
 		});
 
@@ -88,7 +82,7 @@ function addPost(post) {
 	return $post;
 }
 
-function addCollectionAnswer(answer) {
+function addAnswer(answer) {
 	var author = answer.author;
 	var answerLink = answer.answerLink;
 	var content = answer.content;
@@ -106,28 +100,12 @@ function addCollectionAnswer(answer) {
 	return $answer;
 }
 
-function addPeopleAnswer(answer) {
-	var url = answer.url;
-	var content = answer.content;
-	var href = $('.answer-item-title').attr('href', 'http://www.zhihu.com' + url);
-	var $answer =  $(document.createElement('div'))
-	.addClass('answer-item')
-	.append(
-		'<hr>' +
-		'<div class="content">' + content + '</div>' 
-	);
-
-	return $answer;
-}
 // show bottom-line
 $(function () {
 	$('#column2 a').click(function () {
 		$('#column2 a').removeClass('active');
 		$(this).addClass('active');
-
-		window.location.href = '#column1';
 	});
-
 });
 
 // toggle list animation
@@ -141,6 +119,7 @@ $(function () {
 
 
 $(function(){
+
 	$(document).on( 'scroll', function(){
 
 		if ($(window).scrollTop() > 100) {
