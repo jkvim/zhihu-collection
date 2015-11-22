@@ -1,4 +1,5 @@
 // get list of questions or posts
+var urlPrefix = '/zhihu';
 $(function () {
 	var $link = $('#column2 ul > li > a');
 	var $questions = $('#column1 > #questions >ul');
@@ -10,7 +11,7 @@ $(function () {
 		$questions.empty();
 		$answers.empty();
 
-		$.get($elem.attr('href'), function (data, status) {
+		$.get(urlPrefix + $elem.attr('href'), function (data, status) {
 			if (status === 500) return;
 			data.forEach(function (item) {
 				appendList(item, $questions);
@@ -57,7 +58,7 @@ function showAnswer(event) {
 		.appendTo($answers);
 				 
 
-	$.get(questionHref, function (data, status) {
+	$.get(urlPrefix + questionHref, function (data, status) {
 		console.log(data);
 		if (status === 500) return; 
 		data.forEach(function (item) {
