@@ -59,7 +59,6 @@ function showAnswer(event) {
 				 
 
 	$.get(urlPrefix + questionHref, function (data, status) {
-		console.log(data);
 		if (status === 500) return; 
 		data.forEach(function (item) {
 			if (item.slug) {
