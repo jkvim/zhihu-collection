@@ -14,7 +14,7 @@ missions.push(
   // 爬去一个专栏的所有文章
   postSpider.getAllPosts('http://zhuanlan.zhihu.com/koiwai1018'),
 
-   爬去一篇文章
+  // 爬去一篇文章
   postSpider.getOnePost('http://zhuanlan.zhihu.com/p/20357464'),
 
   // 爬取一篇答案, 可以通过浏览器的审查元素功能获取url, 或者通过作者主页的回答
