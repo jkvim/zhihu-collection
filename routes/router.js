@@ -5,7 +5,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var MONGO_HOST = process.env.MONGO_HOST || 'localhost';
 var MONGO_PORT = process.env.MONGO_PORT || '27017';
-var db = mongoose.createConnection('mongodb://' + MONGO_HOST + ':' + MONGO_PORT + 'zhihu');
+var db = mongoose.createConnection('mongodb://' + MONGO_HOST + ':' + MONGO_PORT + '/' + 'zhihu');
 
 var Answer = require('../models/answer.js')(db);
 var Question = require('../models/question.js')(db);
