@@ -7,4 +7,3 @@ RUN npm install
 RUN node app.js
 RUN npm start
 EXPOSE 3000
-ENTRYPOINT ["node", "worker.js"]
