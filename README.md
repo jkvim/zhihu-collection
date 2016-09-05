@@ -7,7 +7,7 @@
 
 ## 使用
 	1. 启动mongodb
-	2. 调用lib的接口进行抓取, 抓取的结果会保存在mongodb中, 具体例子可以看app.js
+	2. 调用lib的接口进行抓取, 抓取的结果会保存在mongodb中, 具体例子可以看example.js
 	3. node worker.js 启动服务器进程, 通过http://localhost:3000 进行浏览
 
 ## 注意

@@ -4,6 +4,4 @@ RUN mkdir -p /opt/nodejs
 ADD . /opt/nodejs
 WORKDIR /opt/nodejs
 RUN npm install
-RUN node app.js
-RUN npm start
 EXPOSE 3000
