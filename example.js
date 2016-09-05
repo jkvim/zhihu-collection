@@ -7,7 +7,7 @@ var missions = [
   collectionSpider.getOne('http://www.zhihu.com/collection/73284137'),
 
   // 爬去一个人的所有收藏夹
-  collectionSpider.getAll('https://www.zhihu.com/people/mu-yi-happy/collections'),
+  collectionSpider.getAll('https://www.zhihu.com/people/qin.chao/collections'),
  
   // 爬去一个专栏的所有文章
   postSpider.getAllPosts('https://zhuanlan.zhihu.com/yanhaijing'),
