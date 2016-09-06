@@ -160,3 +160,28 @@ function scrollToTop() {
 	offsetTop = offset.top;
 	$('html, body').animate({scrollTop: offsetTop}, 500, 'linear');
 }
+
+$(function () {
+  $('.add-item').on('click', function () {
+    $('.new-item').addClass('show');
+  });
+  $(document).on('dblclick', function () {
+    $('.new-item').removeClass('show');
+  })
+  $('.new-item input').on('keypress', function (e) {
+    if (e.which === 13) {
+      var select = $('.new-item select').val();
+      var url = $('.new-item input').val();
+      $('.loading-mask').addClass('show')
+      $.get(urlPrefix + '/get' + select + '?url=' + url, function () {
+        $('.loading-mask').removeClass('show');
+        $('.new-item').removeClass('show');
+        location.reload();
+      })
+      .fail(function (error) {
+        $('.loading-mask').removeClass('show');
+        alert('invalid url');
+      });
+    }
+  });
+});

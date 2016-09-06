@@ -163,8 +163,7 @@ a:focus {
 	bottom: 30px;
 	padding-top: 2px;
 	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px; border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
@@ -183,3 +182,73 @@ a:focus {
 .scroll-top-wrapper i.fa {
 	line-height: inherit;
 }
+.add-item {
+  position: fixed;
+	right: 30px;
+	top: 30px;
+}
+
+.new-item {
+  position: fixed;
+  display: none;
+  width: 500px;
+  height: 40px;
+  top: 50%;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -15px;
+  text-align: left;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.new-item.show {
+  display: block;
+  visibility: visible;
+}
+
+.new-item * {
+  font-size: 16px;
+  height: 38px;
+  border: none;
+  border-radius: 2px;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  outline: none;
+}
+
+.new-item select {
+  width: 60px;
+}
+
+.new-item input {
+  width: calc(100% - 70px);
+  background: #fff;
+}
+
+.loading-mask {
+  display: none;
+}
+
+.loading-mask.show {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.loading-mask .fa-circle-o-notch {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
+  color: #fff;
+} 

@@ -16,6 +16,10 @@ var People = require('../models/people.js')(db);
 var PeopleQuestion = require('../models/people_question.js')(db);
 var PeopleAnswer = require('../models/people_answer.js')(db);
 
+var postSpider = require('../lib/column_spider.js');
+var answerSpider = require('../lib/answer_spider.js');
+var collectionSpider = require('../lib/collection_spider.js');
+
 
 router.get('/', function (req, res) {
 	var collections = new Promise(function (resolve) {
@@ -230,6 +234,63 @@ router.get('/people/:name/question/:id', function (req, res) {
 		console.log(error);
 		res.render(500);
 	});
+});
+
+router.get('/getanswer', function (req, res) {
+  new Q().then(function () {
+    if (req.query.url.match(/www.zhihu.com\/question\/\d+\/answer\/\d+/)) {
+      return answerSpider.getAnswer(req.query.url);
+    } else {
+      return Promise.reject('invalid answer url');
+    }
+  })
+  .then(function () {
+    res.status(200).end();
+  })
+  .catch(function (error) {
+    res.status(400).end();
+  });
+});
+
+router.get('/getpost', function (req, res) {
+  new Q().then(function () {
+    var url = req.query.url;
+    console.log(url);
+    if (url.match(/zhuanlan.zhihu.com\/p\/\d+/)) {
+      return postSpider.getOnePost(url);
+    } else if (url.match(/zhuanlan.zhihu.com\/\w+/)){
+      return postSpider.getAllPosts(url);
+    } else {
+      return Promise.reject('invalid post url');
+    }
+  })
+  .then(function () {
+    res.status(200).end();
+  })
+  .catch(function (error) {
+    res.status(400).end();
+  });
+});
+
+router.get('/getcollection', function (req, res) {
+  new Q().then(function () {
+    var url = req.query.url;
+    console.log(url);
+    if (url.match(/www.zhihu.com\/collection\/\d+/)) {
+      console.log('match');
+      return collectionSpider.getOne(url);
+    } else if (url.match(/www.zhihu.com\/people\/.*\/collections/)){
+      return collectionSpider.getAll(url);
+    } else {
+      return Promise.reject('invalid collection url');
+    }
+  })
+  .then(function () {
+    res.status(200).end();
+  })
+  .catch(function (error) {
+    res.status(400).end();
+  });
 });
 
 module.exports = router;
