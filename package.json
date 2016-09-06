@@ -18,12 +18,14 @@
     "superagent": "^1.4.0"
   },
   "devDependencies": {
+    "grunt": "^1.0.1",
     "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-uglify": "^0.11.0",
     "grunt-hashres": "^0.4.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "grunt static"
   },
   "author": "",
   "license": "ISC"
