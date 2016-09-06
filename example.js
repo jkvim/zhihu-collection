@@ -4,7 +4,7 @@ var collectionSpider = require('./lib/collection_spider.js');
 
 var missions = [
   // 爬去一个收藏夹
-  collectionSpider.getOne('http://www.zhihu.com/collection/73284137'),
+  collectionSpider.getOne('https://www.zhihu.com/collection/32089613'),
 
   // 爬去一个人的所有收藏夹
   collectionSpider.getAll('https://www.zhihu.com/people/qin.chao/collections'),
