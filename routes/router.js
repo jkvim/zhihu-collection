@@ -238,7 +238,7 @@ router.get('/people/:name/question/:id', function (req, res) {
 
 router.get('/getanswer', function (req, res) {
   new Q().then(function () {
-    if (req.query.url.match(/www.zhihu.com\/question\/\d+\/answer\/\d+/)) {
+    if (req.query.url.match(/zhihu.com\/question\/\d+\/answer\/\d+/)) {
       return answerSpider.getAnswer(req.query.url);
     } else {
       return Promise.reject('invalid answer url');
@@ -248,6 +248,7 @@ router.get('/getanswer', function (req, res) {
     res.status(200).end();
   })
   .catch(function (error) {
+    console.log(error);
     res.status(400).end();
   });
 });
@@ -255,7 +256,6 @@ router.get('/getanswer', function (req, res) {
 router.get('/getpost', function (req, res) {
   new Q().then(function () {
     var url = req.query.url;
-    console.log(url);
     if (url.match(/zhuanlan.zhihu.com\/p\/\d+/)) {
       return postSpider.getOnePost(url);
     } else if (url.match(/zhuanlan.zhihu.com\/\w+/)){
@@ -268,6 +268,7 @@ router.get('/getpost', function (req, res) {
     res.status(200).end();
   })
   .catch(function (error) {
+    console.log(error);
     res.status(400).end();
   });
 });
@@ -289,6 +290,7 @@ router.get('/getcollection', function (req, res) {
     res.status(200).end();
   })
   .catch(function (error) {
+    console.log(error);
     res.status(400).end();
   });
 });
