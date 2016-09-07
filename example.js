@@ -17,7 +17,7 @@ var missions = [
 
   // 爬取一篇答案, 可以通过浏览器的审查元素功能获取url, 或者通过作者主页的回答
   answerSpider.getAnswer('www.zhihu.com/question/23835093/answer/25872501'), // test anonymous
-  answerSpider.getAnswer('http://www.zhihu.com/question/37693731/answer/73163568') // test non-anonymous
+  answerSpider.getAnswer('https://www.zhihu.com/question/35133714/answer/61570470') // test non-anonymous
 ];
 
 
